@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            width: 100svw;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 400;
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            gap: 2em;
+            min-width: 20em;
+            padding: .5em;
+            border: 1px solid #a09e9e;
+            box-shadow: 10px 10px 15px 0 #00000038;
+            background-color: #dcdcdc
+        }
+
+        h1 {
+            position: absolute;
+            left: 2%;
+            top: 2%;
+            font-size: .8rem;
+            font-weight: 500;
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            position: relative;
+            padding: 1em 0 3em 0;
+            gap: 1em;
+            width: 100%;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.116);
+            overflow-x: auto;
+        }
+
+        #result{
+            scale: 0;
+            transition: all 200ms ease;
+        }
+
+        header div{
+            overflow-x: auto;
+        }
+
+        header>span {
+            font-size: 1rem;
+        }
+
+        header>div span {
+            font-size: 1.5rem;
+            font-weight: 800;
+            position: relative;
+            transform: translateY(-50%);
+        }
+        header>div span:nth-child(2){
+            font-size: 1.3rem;
+        }
+
+        main {
+            display: grid;
+            grid-template-areas:
+                "CE dividir multiplicar subtrair"
+                "sete oito nove somar"
+                "quatro cinco seis igual"
+                "um dois tres igual"
+                "zero zero zero igual";
+            gap: .2em;
+            width: 100%;
+        }
+
+        main div:nth-child(1) {
+            grid-area: zero;
+        }
+
+        main div:nth-child(2) {
+            grid-area: um;
+        }
+
+        main div:nth-child(3) {
+            grid-area: dois;
+        }
+
+        main div:nth-child(4) {
+            grid-area: tres;
+        }
+
+        main div:nth-child(5) {
+            grid-area: quatro;
+        }
+
+        main div:nth-child(6) {
+            grid-area: cinco;
+        }
+
+        main div:nth-child(7) {
+            grid-area: seis;
+        }
+
+        main div:nth-child(8) {
+            grid-area: sete;
+        }
+
+        main div:nth-child(9) {
+            grid-area: oito;
+        }
+
+        main div:nth-child(10) {
+            grid-area: nove;
+        }
+
+        main div:nth-child(11) {
+            grid-area: igual;
+        }
+
+        main div:nth-child(12) {
+            grid-area: somar;
+        }
+
+        main div:nth-child(13) {
+            grid-area: subtrair;
+        }
+
+        main div:nth-child(14) {
+            grid-area: multiplicar;
+        }
+
+        main div:nth-child(15) {
+            grid-area: dividir;
+        }
+
+        main div:nth-child(16) {
+            grid-area: CE;
+        }
+
+        main>div {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1em;
+            background-color: #fafafa;
+            border: 1px solid #b4b4b4;
+            transition: background 200ms ease;
+        }
+
+        main>div:hover {
+            background-color: #dbdbdb;
+        }
+
+        main>div:active {
+            background-color: #c0c0c0;
+            border: 1px solid #7e7e7e;
+        }
+    </style>
+</head>
+
+
+<body>
+    <section>
+        <h1>Calculator</h1>
+        <header>
+            <span id="result">result</span>
+            <div>
+                <span id="valueOne"></span>
+                <span id="operator"></span>
+                <span id="valueTwo"></span>
+            </div>
+        </header>
+        <main>
+            <div id="div" onclick="addNumber(0)">0</div>
+            <div id="div" onclick="addNumber(1)">1</div>
+            <div id="div" onclick="addNumber(2)">2</div>
+            <div id="div" onclick="addNumber(3)">3</div>
+            <div id="div" onclick="addNumber(4)">4</div>
+            <div id="div" onclick="addNumber(5)">5</div>
+            <div id="div" onclick="addNumber(6)">6</div>
+            <div id="div" onclick="addNumber(7)">7</div>
+            <div id="div" onclick="addNumber(8)">8</div>
+            <div id="div" onclick="addNumber(9)">9</div>
+            <div onclick="Calculator()">=</div>
+            <div onclick="Sum()">+</div>
+            <div onclick="Minus()">-</div>
+            <div onclick="Multiply()">x</div>
+            <div onclick="Divide()">÷</div>
+            <div onclick="CE()">CE</div>
+        </main>
+    </section>
+    <script>
+        const operator = document.querySelector('#operator')
+        let valueOne = document.querySelector('#valueOne')
+        let valueTwo = document.querySelector('#valueTwo')
+        let numbers = document.querySelectorAll('#div')
+        let Result = document.querySelector('#result')
+
+        let multiply = false
+        let divide = false
+        let minus = false
+        let sum = false
+
+
+        numbers.value = parseInt(numbers.value)
+
+        function Sum() {
+            sum = true
+            multiply = false
+            divide = false
+            minus = false
+            operator.innerHTML = "+"
+            return
+        }
+
+        function Minus() {
+            minus = true
+            sum = false
+            multiply = false
+            divide = false
+            operator.innerHTML = "-"
+            return
+        }
+
+        function Multiply() {
+            multiply = true
+            sum = false
+            divide = false
+            minus = false
+            operator.innerHTML = "x"
+            return
+        }
+
+        function Divide() {
+            divide = true
+            sum = false
+            multiply = false
+            minus = false
+            operator.innerHTML = "÷"
+            return
+        }
+
+        function CE() {
+            multiply = false
+            divide = false
+            minus = false
+            sum = false
+            operator.innerHTML = ""
+            valueOne.innerText = ""
+            valueTwo.innerText = ""
+            Result.innerHTML = ""
+        }
+
+        document.addEventListener('keydown', function (event) {
+
+            switch (event.key) {
+                case '+':
+                    Sum();
+                    break;
+                case '-':
+                    Minus();
+                    break;
+                case '/':
+                    Divide();
+                    break;
+                case 'x':
+                case '*':
+                    Multiply();
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    addNumber(parseFloat(event.key));
+                    break;
+                case 'Enter':
+                case '=':
+                    Calculator();
+                    break;
+                case 'Backspace':
+                    CE();
+                    break;
+            }
+        });
+
+        function addNumber(e) {
+            if (multiply || divide || minus || sum) {
+                valueTwo.innerText += e
+            } else valueOne.innerText += e
+
+        }
+        function Calculator() {
+            let num1 = parseFloat(valueOne.innerText);
+            let num2 = parseFloat(valueTwo.innerText);
+            if(sum || multiply || minus || divide){
+                Result.style.scale = "100%"
+            }
+
+            if (sum) {
+                Result.innerHTML = num1 + num2
+            }
+
+            if (multiply) {
+                Result.innerHTML = num1 * num2
+            }
+
+            if (minus) {
+                Result.innerHTML = num1 - num2
+            }
+
+            if (divide) {
+                Result.innerHTML = num1 / num2
+            }
+        }
+
+    </script>
+</body>
+
+</html>
