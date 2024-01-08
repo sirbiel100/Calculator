@@ -49,19 +49,29 @@
             padding: 1em 0 3em 0;
             gap: 1em;
             width: 100%;
+            height: fit-content;
             border-bottom: 1px solid rgba(0, 0, 0, 0.116);
             overflow-x: auto;
         }
 
-        #result{
+        #result {
+            position: absolute;
+            top: 2%;
+            right: 5%;
             scale: 0;
             transition: all 200ms ease;
         }
 
-        header div{
+        header div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 9em;
             overflow-x: auto;
-        }
+            position: absolute;
+            bottom: 0;
 
+        }
         header>span {
             font-size: 1rem;
         }
@@ -69,10 +79,10 @@
         header>div span {
             font-size: 1.5rem;
             font-weight: 800;
-            position: relative;
-            transform: translateY(-50%);
+            transition: all 200ms ease;
         }
-        header>div span:nth-child(2){
+
+        header>div span:nth-child(2) {
             font-size: 1.3rem;
         }
 
@@ -179,7 +189,7 @@
     <section>
         <h1>Calculator</h1>
         <header>
-            <span id="result">result</span>
+            <span id="result"></span>
             <div>
                 <span id="valueOne"></span>
                 <span id="operator"></span>
@@ -217,8 +227,6 @@
         let minus = false
         let sum = false
 
-
-        numbers.value = parseInt(numbers.value)
 
         function Sum() {
             sum = true
@@ -262,9 +270,14 @@
             minus = false
             sum = false
             operator.innerHTML = ""
+
             valueOne.innerText = ""
+            valueOne.style.scale = "0"
+
             valueTwo.innerText = ""
-            Result.innerHTML = ""
+            valueTwo.style.scale = "0"
+
+            Result.style.scale = "0"
         }
 
         document.addEventListener('keydown', function (event) {
@@ -307,31 +320,47 @@
         function addNumber(e) {
             if (multiply || divide || minus || sum) {
                 valueTwo.innerText += e
-            } else valueOne.innerText += e
+                valueTwo.style.scale = "1"
+            } else {
+                valueOne.innerText += e
+                valueOne.style.scale = "1"
+            }
 
         }
         function Calculator() {
             let num1 = parseFloat(valueOne.innerText);
             let num2 = parseFloat(valueTwo.innerText);
-            if(sum || multiply || minus || divide){
-                Result.style.scale = "100%"
-            }
+            let result = parseFloat(Result.innerText);
+
 
             if (sum) {
-                Result.innerHTML = num1 + num2
+                Result.innerText = num1 + num2
             }
 
             if (multiply) {
-                Result.innerHTML = num1 * num2
+                Result.innerText = num1 * num2
             }
 
             if (minus) {
-                Result.innerHTML = num1 - num2
+                Result.innerText = num1 - num2
             }
 
             if (divide) {
-                Result.innerHTML = num1 / num2
+                Result.innerText = num1 / num2
             }
+
+            if (sum || multiply || minus || divide) {
+                Result.style.scale = "1"
+            }
+
+            if (valueOne.innerText === '' || valueTwo.innerText === '') {
+                Result.innerText = 'Error'
+                Result.style.scale = "1"
+                Result.style.color = "red"
+            } else {
+                Result.style.color = "#000"
+            }
+
         }
 
     </script>
