@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
+    <title>GC | Calculator</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <style>
         * {
             box-sizing: border-box;
@@ -72,6 +73,7 @@
             bottom: 0;
 
         }
+
         header>span {
             font-size: 1rem;
         }
@@ -181,6 +183,129 @@
             background-color: #c0c0c0;
             border: 1px solid #7e7e7e;
         }
+
+        /* Credits */
+        .creditSection {
+            position: fixed;
+            bottom: 3em;
+            right: 3em;
+            width: 4em;
+            height: 4em;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 5px 5px 15px 0px rgba(0, 0, 0, 0.158);
+            background: linear-gradient(to right, #000000, #fcfcfc);
+            transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+            z-index: 10;
+        }
+
+        .creditSection::after {
+            content: "G C";
+            color: rgb(255, 213, 134);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            text-shadow: #000 0 0 10px;
+            transform: translateY(-50%) translateX(-50%);
+        }
+
+        .creditSection .Loading {
+            position: absolute;
+            width: 4em;
+            height: 4em;
+            border: 2px solid rgb(100, 100, 100);
+            border-top: 2px solid rgb(255, 213, 134);
+            animation: infiniteBorder 5s infinite linear;
+            border-radius: 50%;
+            transition-delay: 1s;
+        }
+
+        .creditSection .creditDiv {
+            margin-left: 0.8em;
+            transform: scale(0);
+        }
+
+        .creditSection .creditDiv p {
+            color: #ffff;
+            cursor: default;
+            text-shadow: 0 0 1px #000;
+        }
+
+        .creditSection .creditDiv p a {
+            text-decoration: none;
+            color: rgb(250, 233, 176);
+            filter: drop-shadow(0 0 5px #000000);
+        }
+
+        .creditSection:hover {
+            height: 4em;
+            width: 15em;
+            border-radius: 30px;
+            border: 1px solid black;
+        }
+
+        .creditSection:hover::after {
+            display: none;
+        }
+
+        .creditSection:hover .Loading {
+            display: none;
+        }
+
+        .creditSection:hover .creditDiv {
+            transform: scale(1);
+            transition: all .4s ease-in;
+        }
+
+        @keyframes infiniteBorder {
+            0% {
+                transform: rotate(0);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .creditSection {
+                position: static;
+                width: auto;
+                border-radius: 22px;
+                padding: 1em;
+            }
+
+            .creditSection:hover {
+                width: auto;
+                border-radius: 22px;
+                border: 0px solid black;
+            }
+
+            .creditSection .creditDiv {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                transform: translateX(0) scale(1);
+                opacity: 1;
+                margin-left: 0;
+            }
+
+            .creditSection::after {
+                display: none;
+            }
+
+            .creditSection .creditDiv:hover {
+                width: auto;
+                height: 4em;
+                border: none;
+            }
+
+            .Loading {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -215,6 +340,17 @@
             <div onclick="CE()">CE</div>
         </main>
     </section>
+
+    <aside class="creditSection">
+        <div class="Loading"></div>
+        <div class="creditDiv">
+            <p>
+                Coded by <a href="https://gabriel-crispim-portfolio-sirbiel100.vercel.app/" target='_blank'
+                    rel='noreferrer'>Crispim.</a>😁
+            </p>
+        </div>
+    </aside>
+
     <script>
         const operator = document.querySelector('#operator')
         let valueOne = document.querySelector('#valueOne')
